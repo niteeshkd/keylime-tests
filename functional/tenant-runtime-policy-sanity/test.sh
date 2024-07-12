@@ -51,6 +51,11 @@ rlJournalStart
         rlAssertGrep "{'code': 201, 'status': 'Created', 'results': {}}" $rlRun_LOG
     rlPhaseEnd
 
+    rlPhaseStartTest "Test listruntimepolicy"
+        rlRun -s "keylime_tenant -c listruntimepolicy"
+        rlAssertGrep "list1" "$rlRun_LOG"
+    rlPhaseEnd
+
     rlPhaseStartTest "Test updateruntimepolicy fails on malformed policy"
         rlRun -s "keylime_tenant -c updateruntimepolicy --runtime-policy <(echo '{}') --runtime-policy-name list1" 1
         rlAssertGrep "{'code': 400, 'status': \"Runtime policy is malformatted: 'meta' is a required property\", 'results': {}}" $rlRun_LOG
